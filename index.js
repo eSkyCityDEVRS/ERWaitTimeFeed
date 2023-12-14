@@ -1,4 +1,5 @@
 const express = require("express"); 
+const serverless = require('serverless-http');
 const morgan = require("morgan");
 const xml = require('xml');
 const fs = require('fs-extra');
@@ -40,7 +41,7 @@ app.get("/:faccodes", (request, response) => {
                 const feed = '<?xml version="1.0" encoding="UTF-8"?>' + xml(feedObject);
 
                 response.setHeader('Content-Type', 'text/xml');
-                response.setHeader('Content-Disposition', `attachment; filename=${FACILITY_CODE}.rss`);
+                // response.setHeader('Content-Disposition', `attachment; filename=${FACILITY_CODE}.rss`);
 
                 response.send(feed);
             });
@@ -93,6 +94,8 @@ async function procesMultipleErWaitTimes (data) {
 }
   
 // Starting our Proxy server 
-app.listen(PORT, HOST, () => { 
-    console.log(`Starting Server at ${HOST}:${PORT}`); 
-}); 
+// app.listen(PORT, HOST, () => { 
+//     console.log(`Starting Server at ${HOST}:${PORT}`); 
+// }); 
+
+module.exports.handler = serverless(app);
